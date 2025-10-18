@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Borey</title>
+  <!-- <link rel="stylesheet" href="asm_web_II.css" /> -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- boostrap -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Link to React -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+  <style>
+    .container {
+      border: 2px solid black;
+      padding-left: 25px;
+      padding-right: 25px;
+      background-color: whitesmoke;
+      border-radius: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Flex container layout */
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      /* border: 2px solid red; */
+      background-color: #D1F5E1;
+      margin: 2% 5%;
+      height: 60vh;
+      border-radius: 15px;
+      box-sizing: border-box;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    /* Shop Now box: 2/4 width (50%) */
+    .btn-link1 {
+      width: 50%;
+      height: 100%;
+      box-sizing: border-box;
+      text-decoration: none;
+      color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Shop Now box styling */
+    .flex_box {
+      width: 100%;
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      text-align: center;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    /* Right container: 2 columns each 1/4 width (25% each) */
+    .right-container {
+      width: 50%; /* total right side */
+      display: flex;
+      gap: 10px;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Each right column: 1/4 width */
+    .right-column {
+      width: 50%; /* half of right-container = 25% of main */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Each box inside right columns takes half height */
+    .flex_box1,
+    .flex_box2,
+    .flex_box3,
+    .flex_box4 {
+      /* border: 2px solid blue; */
+      display: flex;
+      flex-direction: column;
+      background-color: #C292B4;
+      border-radius: 5px;
+      box-sizing: border-box;
+      padding: 5px;
+      justify-content: center;
+      align-items: center;
+      height: 50%; /* half height of column */
+    }
+
+    /* Aspect ratio box to keep images consistent */
+    .aspect-ratio-box {
+      position: relative;
+      width: 100%;
+      padding-top: 75%; /* 4:3 aspect ratio */
+      overflow: hidden;
+      border-radius: 5px;
+    }
+
+    .aspect-ratio-box img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    /* Button styling */
+    .btn-1 {
+      border: none;
+      padding: 10px 20px;
+      background-color: aqua;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+
+    .btn-1:hover {
+      background-color: rgb(110, 34, 153);
+      color: rgb(201, 221, 220);
+    }
+
+    /* Make images fit their containers */
+    .flex_box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Use 'contain' if you want to see the whole image */
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+    .pic-zoom {
+      padding: 3px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      image-rendering: auto;
+    }
+    .pic-zoom:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s;
+      cursor: pointer;
+      border-image-repeat: repeat;
+    }
+
+    /* 📱 Responsive layout */
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .flex-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .btn-link1,
+      .right-container {
+        width: 100%;
+        height: auto;
+      }
+
+      .right-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .right-column {
+        width: 48%;
+        height: auto;
+        flex-direction: column;
+      }
+
+      .flex_box1,
+      .flex_box2,
+      .flex_box3,
+      .flex_box4 {
+        height: auto;
+        width: 100%;
+        padding: 0; /* remove padding to avoid extra space */
+      }
+
+      /* Override aspect ratio padding for smaller screens if needed */
+      .aspect-ratio-box {
+        padding-top: 75%; /* keep 4:3 ratio on small screens */
+      }
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Updated nav-link styles for better functionality */
+    .nav-link {
+      position: relative;
+      transition: color 0.3s ease;
+      padding-bottom: 8px; /* Space for underline */
+    }
+    .line-under {
+      padding-bottom: 8px; /* Space for underline */
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0; /* Keep underline inside the link area */
+      left: 50%;
+      background-color: #11d8d8;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #16a34a; /* Green for active state (matches Tailwind green-600) */
+    }
+
+    /* Box terb create new */
+    #root, #root1, #root2, #root3, #root4, #root5, #root6, #root7, #root8 {
+      margin-top:1%;
+      padding: 10px;
+      width: 400px;
+      border: 2px solid purple;
+      border-radius: 10px;
+      justify-items: center;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 1%;
+    } 
+    
+    
+    /* Product12345 */
+    #root-p1, #root-p2, #root-p3, #root-p4, #root-p5, #root-p6, #root-p7, #root-p8, #root-p9, 
+    #root-p12, #root-p22, #root-p32, #root-p42, #root-p52, #root-p62, #root-p72, #root-p82, #root-p92, 
+    #root-p13, #root-p23, #root-p33, #root-p43, #root-p53, #root-p63, #root-p73, #root-p83, #root-p93, 
+    #root-p14, #root-p24, #root-p34, #root-p44, #root-p54, #root-p64, #root-p74, #root-p84, #root-p94, 
+    #root-p15, #root-p25, #root-p35, #root-p45, #root-p55, #root-p65, #root-p75, #root-p85, #root-p95
+    {
+      margin-top:1%;
+      padding: 10px;
+      width: 400px;
+      border: 2px solid purple;
+      border-radius: 10px;
+      justify-items: center;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 1%;
+    }
+    .first-prod {
+      border: 2px solid black;
+      border-radius: 17px;
+      margin: 2% 5%;
+      padding: 20px;
+      background-color: #F3E5F5;
+    }
+    .name-prod1 {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid rgb(195, 39, 39);
+      padding-bottom: 10px;
+      font-size: 32px;
+      font-weight: bold;
+      color: rgb(13, 68, 146);
+      
+    }
+
+
+
+
+
+   
+    img {
+      border-radius: 15px;
+    }
+    .disp {
+      justify-content: space-evenly;
+      display: flex;
+    }
+
+    @media (max-width: 850px) {
+      .disp {
+        flex-direction: column;
+        align-items: center;
+      }
+      #root, #root1, #root2, #root3, #root4, #root5, #root6, #root7, #root8 {
+        max-width: 70%;
+        margin-top: 20px;
+      }
+      #root-p1, #root-p2, #root-p3, #root-p4, #root-p5, #root-p6, #root-p7, #root-p8, #root-p9, 
+    #root-p12, #root-p22, #root-p32, #root-p42, #root-p52, #root-p62, #root-p72, #root-p82, #root-p92, 
+    #root-p13, #root-p23, #root-p33, #root-p43, #root-p53, #root-p63, #root-p73, #root-p83, #root-p93, 
+    #root-p14, #root-p24, #root-p34, #root-p44, #root-p54, #root-p64, #root-p74, #root-p84, #root-p94, 
+    #root-p15, #root-p25, #root-p35, #root-p45, #root-p55, #root-p65, #root-p75, #root-p85, #root-p95
+     {
+        max-width: 70%;
+        margin-top: 20px;
+      }
+    }
+    .h2 {
+      color: blue;
+      text-align: center;
+    }
+
+     .pic-show {
+      padding: 3px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      image-rendering: auto;
+    }
+    .pic-show:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s;
+      cursor: pointer;
+      border-image-repeat: repeat;
+    }
+
+
+    .div1{
+            display: flex;
+            gap: 20px;
+            border-radius: 10px;
+        }
+
+
+  </style>
+</head>
+<body>
+  <nav class="bg-white shadow fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+      <div class="text-2xl font-bold text-green-600">
+        <img src="/img/kawasaki-a.jpg" alt="Logo" class="h-10 w-10 inline-block mr-2" />
+        Borey
+      </div>
+      <div class="hidden md:flex space-x-8">
+        <a href="#" class="nav-link text-gray-700 hover:text-green-600" data-page="home">Home</a>
+        <a href="#" class="nav-link text-gray-700 hover:text-green-600" data-page="about">
+    
+        </a>
+        <div class="div1">
+            <div class="btn-group">
+                <button type="button" class="line-under block text-gray-700 hover:text-green-600">Products List</button>
+                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item nav-link text-gray-700 hover:text-green-600" href="#" data-page="car">Car</a></li>
+                    <li><a class="dropdown-item nav-link text-gray-700 hover:text-green-600" href="#" data-page="motor">Motor</a></li>
+                    <li><a class="dropdown-item nav-link text-gray-700 hover:text-green-600" href="#" data-page="plan">Plan</a></li>
+                    <li><a class="dropdown-item nav-link text-gray-700 hover:text-green-600" href="#" data-page="bike">Bike</a></li>
+                    <li><a class="dropdown-item nav-link text-gray-700 hover:text-green-600" href="#" data-page="drone">Drone</a></li>
+                </ul>
+            </div>
+        </div>
+        <a href="#" class="nav-link text-gray-700 hover:text-green-600" data-page="services">Services</a>
+        <a href="#" class="nav-link text-gray-700 hover:text-green-600" data-page="product">Products</a>
+        <a href="#" class="nav-link text-gray-700 hover:text-green-600" data-page="contact">Contact</a>
+      </div>
+
+      <button class="md:hidden mobile-menu-btn text-gray-700 hover:text-green-600" aria-label="Toggle menu">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu hidden md:hidden bg-white shadow">
+      <div class="px-4 py-3 space-y-1">
+        <a href="#" class="nav-link block text-gray-700 hover:text-green-600" data-page="home">Home</a>
+        <a href="#" class="nav-link block text-gray-700 hover:text-green-600" data-page="about">About</a>
+        <a href="#" class="nav-link block text-gray-700 hover:text-green-600" data-page="services">Services</a>
+        <a href="#" class="nav-link block text-gray-700 hover:text-green-600" data-page="product">Products</a>
+        <a href="#" class="nav-link block text-gray-700 hover:text-green-600" data-page="contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-16 max-w-5xl mx-auto px-4">
+    <!-- Home page -->
+    <div id="home" class="page active">
+      <div class="flex-container">
+        <a href="#" class="btn-link1">
+          <div class="flex_box">
+            <img class="pic-zoom" src="img/car-1.jpg" alt="Borey Logo" />
+            <button class="btn-1">Shop Now</button><br />
+          </div>
+        </a>
+
+        <div class="right-container">
+          <div class="right-column">
+            <div class="flex_box1">
+              <div class="aspect-ratio-box">
+                <img class="pic-zoom" src="img/kawasaki-b.jpg" alt="Borey Logo" />
+              </div>
+            </div>
+            <div class="flex_box2">
+              <div class="aspect-ratio-box">
+                <img class="pic-zoom" src="img/bike1.webp" alt="Borey Logo" />
+              </div>
+            </div>
+          </div>
+
+          <div class="right-column">
+            <div class="flex_box3">
+              <div class="aspect-ratio-box">
+                <img class="pic-zoom" src="img/drone-2.jpg" alt="Borey Logo" />
+              </div>
+            </div>
+            <div class="flex_box4">
+              <div class="aspect-ratio-box">
+                <img class="pic-zoom" src="img/drone-1.jpg" alt="Borey Logo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Moved .disp divs inside #home -->
+      <div class="disp">
+        <div id="root"></div>
+        <div id="root1"></div>
+        <div id="root2"></div>
+      </div>
+      <div class="disp">
+        <div id="root3"></div>
+        <div id="root4"></div>
+        <div id="root5"></div>
+      </div>
+      <div class="disp">
+        <div id="root6"></div>
+        <div id="root7"></div>
+        <div id="root8"></div>
+      </div>
+    </div>
+
+    <!-- About page -->
+    <div id="about" class="page">
+      <h1 class="text-3xl font-bold mb-4">About Us</h1>
+      <p class="mb-4">Welcome to Borey! We are passionate about providing the best products and services to our customers. Our mission is to deliver quality and value in everything we do.</p>
+      <p>Our team is dedicated to ensuring customer satisfaction and we strive to exceed expectations with every interaction. Thank you for choosing Borey!</p>
+    </div>
+
+    <!-- Services page -->
+    <div id="services" class="page">
+      <h1 class="text-3xl font-bold mb-4">Our Services</h1>
+      <ul class="list-disc list-inside space-y-2">
+        <li>Product Sales: We offer a wide range of high-quality products to meet your needs.</li>
+        <li>Customer Support: Our support team is available to assist you with any questions or concerns.</li>
+        <li>Custom Orders: We can help you find or create custom products tailored to your specifications.</li>
+        <li>Fast Shipping: We ensure quick and reliable delivery of your orders.</li>
+      </ul>
+    </div>
+
+    <!-- Product page -->
+    <div id="product" class="page">
+      <!-- All product is put there -->
+      <h1 class="container-prod">Our Products</h1>
+
+
+      <!-- first of product -->
+      <div class="first-prod">
+        <div class="name-prod1">
+          <p class="text-prod1">Cars</p>
+        </div>
+          <div class="disp">
+            <div id="root-p1"></div>
+            <div id="root-p2"></div>
+            <div id="root-p3"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p4"></div>
+            <div id="root-p5"></div>
+            <div id="root-p6"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p7"></div>
+            <div id="root-p8"></div>
+            <div id="root-p9"></div>
+        </div>
+      </div>
+
+
+
+
+      <!-- second of product -->
+      <div class="first-prod">
+        <div class="name-prod1">
+          <p class="text-prod1">Motors</p>
+        </div>
+          <div class="disp">
+            <div id="root-p12"></div>
+            <div id="root-p22"></div>
+            <div id="root-p32"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p42"></div>
+            <div id="root-p52"></div>
+            <div id="root-p62"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p72"></div>
+            <div id="root-p82"></div>
+            <div id="root-p92"></div>
+        </div>
+      </div>
+
+
+      <!-- third of product -->
+      <div class="first-prod">
+        <div class="name-prod1">
+          <p class="text-prod1">Plans</p>
+        </div>
+          <div class="disp">
+            <div id="root-p13"></div>
+            <div id="root-p23"></div>
+            <div id="root-p33"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p43"></div>
+            <div id="root-p53"></div>
+            <div id="root-p63"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p73"></div>
+            <div id="root-p83"></div>
+            <div id="root-p93"></div>
+        </div>
+      </div>
+
+
+      <!-- fourth of product -->
+      <div class="first-prod">
+        <div class="name-prod1">
+          <p class="text-prod1">Bikes</p>
+        </div>
+          <div class="disp">
+            <div id="root-p14"></div>
+            <div id="root-p24"></div>
+            <div id="root-p34"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p44"></div>
+            <div id="root-p54"></div>
+            <div id="root-p64"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p74"></div>
+            <div id="root-p84"></div>
+            <div id="root-p94"></div>
+        </div>
+      </div>
+
+
+      <!-- fifth of product -->
+      <div class="first-prod">
+        <div class="name-prod1">
+          <p class="text-prod1">Drones</p>
+        </div>
+          <div class="disp">
+            <div id="root-p15"></div>
+            <div id="root-p25"></div>
+            <div id="root-p35"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p45"></div>
+            <div id="root-p55"></div>
+            <div id="root-p65"></div>
+          </div>
+          <div class="disp">
+            <div id="root-p75"></div>
+            <div id="root-p85"></div>
+            <div id="root-p95"></div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!-- End line div of product -->
+    </div>
+
+    <!-- Contact page -->
+    <div id="contact" class="page"></div>
+    <div id="motor" class="page">
+      Motor
+    </div>
+    
+  </main>
+
+
+
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+    <p>Copyright Borey 007</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pages = document.querySelectorAll('.page');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const mobileMenu = document.querySelector('.mobile-menu');
+
+      function showPage(pageId) {
+        pages.forEach(page => {
+          page.classList.toggle('active', page.id === pageId);
+        });
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-page') === pageId);
+        });
+        mobileMenu.classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const pageId = link.getAttribute('data-page');
+          showPage(pageId);
+        });
+      });
+
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      showPage('home');
+    });
+  </script>
+
+
+
+
+
+
+  <script type="text/javascript">
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root1')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root2')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root3')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root4')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root5')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root6')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root7')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                className: 'pic-show',
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root8')
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Product 1 in product page
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p1')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p2')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p3')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p4')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p5')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p6')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p7')
+    ); 
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p8')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p9')
+    );
+
+
+
+
+
+    // Product 2 in product page
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p12')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p22')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p32')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p42')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p52')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p62')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p72')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p82')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p92')
+    );
+
+
+
+
+
+            // Product 3
+
+
+    ReactDOM.render(
+      React.createElement('div', null, [
+          React.createElement('img', {
+              src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+              alt: 'React Image'
+          }),
+          React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+          React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p13')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p23')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p33')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p43')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p53')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p63')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p73')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p83')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p93')
+    );
+
+
+
+
+
+
+
+
+
+    // Product 4
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p14')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p24')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p34')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p44')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p54')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p64')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p74')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p84')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p94')
+    );
+
+
+
+
+
+
+
+    // Product 5
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-1'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p15')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-2'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p25')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-3'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p35')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-4'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p45')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-5'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p55')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-6'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p65')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-7'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p75')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-8'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p85')
+    );
+    ReactDOM.render(
+        React.createElement('div', null, [
+            React.createElement('img', {
+                src: 'https://th.bing.com/th/id/OIP.6HS-65844fwPar6SdLBm5wHaHa?w=186&h=186&c=7&r=0&o=7&cb=12&dpr=1.3&pid=1.7&rm=3',
+                alt: 'React Image'
+            }),
+            React.createElement('h2', {className: 'h2'}, 'Code: borey-9'),
+            React.createElement('h4', {className: 'h2'}, 'Click Here To order!')
+        ]),
+        document.getElementById('root-p95')
+    );
+
+
+
+
+    </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- <script src="asm_web_II.js"></script> -->
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
